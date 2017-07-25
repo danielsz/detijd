@@ -10,7 +10,7 @@
  pom {:project 'org.danielsz/detijd
       :version "0.1.0-SNAPSHOT"
       :scm {:name "git"
-            :url "https://bitbucket.org/danielsz/detijd"}})
+            :url "https://github.com/danielsz/detijd"}})
 
 (deftask build
   []
