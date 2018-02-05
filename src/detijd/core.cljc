@@ -39,10 +39,12 @@
   (t/within? (t/interval (t/minus (t/now) (t/days n)) (t/now)) date))
 
 (defn this-week? [date]
-  (= (t/week-number-of-year (t/now)) (t/week-number-of-year date)))
+  (and (= (t/year (t/now)) (t/year date))
+       (= (t/week-number-of-year (t/now)) (t/week-number-of-year date))))
 
 (defn this-month? [date]
-  (= (t/month (t/now)) (t/month date)))
+  (and (= (t/year (t/now)) (t/year date))
+       (= (t/month (t/now)) (t/month date))))
 
 (defn last-months? [date n]
   (t/within? (t/interval (t/minus (t/now) (t/months n)) (t/now)) date))
