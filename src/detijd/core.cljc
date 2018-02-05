@@ -46,6 +46,9 @@
   (and (= (t/year (t/now)) (t/year date))
        (= (t/month (t/now)) (t/month date))))
 
+(defn this-year? [date]
+  (= (t/year (t/now)) (t/year date)))
+
 (defn last-months? [date n]
   (t/within? (t/interval (t/minus (t/now) (t/months n)) (t/now)) date))
 
