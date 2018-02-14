@@ -38,6 +38,12 @@
 (defn last-days? [date n]
   (t/within? (t/interval (t/minus (t/now) (t/days n)) (t/now)) date))
 
+(defn last-hours? [date n]
+  (t/within? (t/interval (t/minus (t/now) (t/hours n)) (t/now)) date))
+
+(defn last-minutes? [date n]
+  (t/within? (t/interval (t/minus (t/now) (t/minutes n)) (t/now)) date))
+
 (defn this-week? [date]
   (and (= (t/year (t/now)) (t/year date))
        (= (t/week-number-of-year (t/now)) (t/week-number-of-year date))))
