@@ -8,7 +8,9 @@
   (last-hours? [d x])
   (last-minutes? [d x])
   (last-months? [d x])
-  (today? [d]))
+  (today? [d])
+  (in-future? [d])
+  (in-past? [d]))
 
 (extend-type org.joda.time.DateTime
   DeTijd
@@ -20,12 +22,20 @@
     (t/within? (t/interval (t/minus (t/now) (t/minutes x)) (t/now)) d))
   (last-months? [d x]
     (t/within? (t/interval (t/minus (t/now) (t/months x)) (t/now)) d))
-  (today? [d] (= (.toLocalDate d) (t/today))))
+  (today? [d] (= (.toLocalDate d) (t/today)))
+  (in-future? [d]
+    (t/before? (t/now) d))
+  (in-past? [d]
+    (t/after? (t/now) d)))
 
 (extend-type java.time.Instant
   DeTijd
   (today? [d] (let [today (.getDayOfWeek (LocalDateTime/ofInstant (Instant/now) (ZoneId/systemDefault)))]
                 (= (.getDayOfWeek (LocalDateTime/ofInstant d (ZoneId/systemDefault))) today)))
+  (in-future? [d]
+    (.isBefore (Instant/now) d))
+  (in-past? [d]
+    (.isAfter (Instant/now) d))
   (last-minutes? [d x] (let [past (.minus (Instant/now) x ChronoUnit/MINUTES)]
                         (.isAfter d past)))
   (last-hours? [d x] (let [past (.minus (Instant/now) x ChronoUnit/HOURS)]
