@@ -10,7 +10,9 @@
   (last-months? [d x])
   (today? [d])
   (in-future? [d])
-  (in-past? [d]))
+  (in-past? [d])
+  (days-elapsed? [d])
+  (days-remain? [d]))
 
 (extend-type org.joda.time.DateTime
   DeTijd
@@ -43,7 +45,15 @@
   (last-days? [d x] (let [past (.minus (Instant/now) x ChronoUnit/DAYS)]
                      (.isAfter d past)))
   (last-months? [d x] (let [period (Period/between (LocalDate/ofInstant d (ZoneId/systemDefault)) (LocalDate/ofInstant (Instant/now) (ZoneId/systemDefault)))]
-                       (> x (.getMonths period)))))
+                        (> x (.getMonths period))))
+  (days-elapsed? [d] (if (in-past? d)
+                       (let [now (Instant/now)]
+                         (.between ChronoUnit/DAYS d now))
+                       (throw (AssertionError. "Date is not in past"))))
+  (days-remain? [d] (if (in-future? d)
+                      (let [now (Instant/now)]
+                        (.between ChronoUnit/DAYS now d))
+                      (throw (AssertionError. "Date is not in future")))))
 
 (defmulti past? (fn [d x unit] unit))
 (defmethod past? :day [d x _]
