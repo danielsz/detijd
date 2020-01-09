@@ -1,8 +1,8 @@
 (ns detijd.predicates-test
-  (:require [clojure.test :refer [testing deftest is use-fixtures with-test test-ns]]
+  (:require [clojure.test :refer [deftest is]]
             [clj-time.core :as t]
-            [detijd.predicates :refer [past? in-future? in-past?]])
-  (:import [java.time Instant LocalDate ZoneId ZoneOffset Period]
+            [detijd.predicates :refer [past? in-future? in-past? today?]])
+  (:import [java.time Instant LocalDate ZoneId ZoneOffset]
            [java.time.temporal ChronoUnit]))
 
 (deftest detijd-instant
@@ -19,6 +19,7 @@
                           (.minusMonths 5)
                           (.atStartOfDay ZoneOffset/UTC)
                           (.toInstant))]
+    (is (today? five-hours-ago))
     (is (in-future? five-minutes-later))
     (is (in-past? five-minutes-ago))
     (is (past? now 3 :minute))
@@ -38,6 +39,7 @@
         five-hours-ago (t/minus now (t/hours 5))
         five-days-ago (t/minus now (t/days 5))
         five-months-ago (t/minus now (t/months 5))]
+    (is (today? five-hours-ago))
     (is (past? now 3 :minute))
     (is (in-future? five-minutes-later))
     (is (in-past? five-minutes-ago))

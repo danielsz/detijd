@@ -32,8 +32,8 @@
 
 (extend-type java.time.Instant
   DeTijd
-  (today? [d] (let [today (.getDayOfWeek (LocalDateTime/ofInstant (Instant/now) (ZoneId/systemDefault)))]
-                (= (.getDayOfWeek (LocalDateTime/ofInstant d (ZoneId/systemDefault))) today)))
+  (today? [d] (let [today (.truncatedTo (Instant/now) ChronoUnit/DAYS) ]
+                (= today (.truncatedTo d ChronoUnit/DAYS))))
   (in-future? [d]
     (.isBefore (Instant/now) d))
   (in-past? [d]
