@@ -1,16 +1,18 @@
 (ns detijd.core
-  (:require [clj-time.coerce :as c]
-            [clj-time.core :as t]
-            [clj-time.format :as f]
-            [clj-time.periodic :as p]
-            [clj-time.predicates :as pr]))
+  (:require
+   [clojure.walk :as w]
+   [clj-time.coerce :as c]
+   [clj-time.core :as t]
+   [clj-time.format :as f]
+   [clj-time.periodic :as p]
+   [clj-time.predicates :as pr]))
 
 (defn coerce-dates-to-long [m]
   (let [f (fn [[k v]]
             (if (= org.joda.time.DateTime (type v))
               [k (c/to-long v)]                                           
               [k v]))]
-    (clojure.walk/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
+    (w/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
 
 (def minutes-to-chime-hour
   #(let [next-time (t/plus (t/now) (t/hours 1))

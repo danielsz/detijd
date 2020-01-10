@@ -3,10 +3,11 @@
   :artifact-id "detijd",
   :version "0.1.3",
   :name "detijd"},
+ :build-properties {:project-build-sourceEncoding "UTF-8"}
  :packaging
  {:uberjar
   {:enabled false,
-   :build-properties {:main-class "main.core"},
+   :build-properties {:main-class "detijd.core"},
    :remote-repository
    {:id "ssh-repository",
     :url "scpexe://user@domain:/home/.m2/repository"},
