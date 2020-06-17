@@ -5,7 +5,9 @@
    [clj-time.core :as t]
    [clj-time.format :as f]
    [clj-time.periodic :as p]
-   [clj-time.predicates :as pr]))
+   [clj-time.predicates :as pr])
+  #?(:clj (:import [java.time Instant ZoneId ZonedDateTime]
+                   [java.time.temporal IsoFields])))
 
 (defn coerce-dates-to-long [m]
   (let [f (fn [[k v]]
@@ -87,3 +89,11 @@
 (defn pred-to-date-alt [pred]
   (let [months (take 12 (p/periodic-seq (t/date-time 2011 1 1) (t/months 1)))]
     (some #(when (pred %) %) months)))
+
+#?(:clj (defn week-number
+          ([]
+           (week-number (Instant/now)))
+          ([instant]
+           (-> instant
+               (ZonedDateTime/ofInstant (ZoneId/systemDefault))
+               (.get IsoFields/WEEK_OF_WEEK_BASED_YEAR)))))
