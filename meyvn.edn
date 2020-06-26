@@ -1,7 +1,7 @@
 {:pom
  {:group-id "org.danielsz",
   :artifact-id "detijd",
-  :version "0.1.5",
+  :version "0.1.6",
   :name "detijd"},
  :build-properties {:project-build-sourceEncoding "UTF-8"}
  :packaging

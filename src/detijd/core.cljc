@@ -6,12 +6,13 @@
    [clj-time.format :as f]
    [clj-time.periodic :as p]
    [clj-time.predicates :as pr])
-  #?(:clj (:import [java.time Instant ZoneId ZonedDateTime]
-                   [java.time.temporal IsoFields])))
+  #?(:clj (:import [java.time Instant ZoneId ZonedDateTime LocalDate Duration]
+                   [java.time.temporal TemporalAdjusters IsoFields]
+                   [org.joda.time DateTime])))
 
 (defn coerce-dates-to-long [m]
   (let [f (fn [[k v]]
-            (if (= org.joda.time.DateTime (type v))
+            (if (= DateTime (type v))
               [k (c/to-long v)]                                           
               [k v]))]
     (w/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
@@ -97,3 +98,9 @@
            (-> instant
                (ZonedDateTime/ofInstant (ZoneId/systemDefault))
                (.get IsoFields/WEEK_OF_WEEK_BASED_YEAR)))))
+
+#?(:clj (defn seconds-to-first-day-of-next-month []
+          (let [now (ZonedDateTime/now (ZoneId/of "Asia/Jerusalem"))
+                next-run (.with now (TemporalAdjusters/firstDayOfNextMonth))
+                duration (Duration/between now next-run)]
+            (.getSeconds duration))))
