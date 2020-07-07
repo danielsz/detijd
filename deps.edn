@@ -3,5 +3,5 @@
            :repl {:extra-deps {nrepl {:mvn/version "0.7.0"}
                                cider/piggieback {:mvn/version "0.4.2"},
                                org.danielsz/meyvn-nrepl-middleware {:mvn/version "1.1.2"}
-                               cider/cider-nrepl {:mvn/version "0.25.0-alpha1"}
+                               cider/cider-nrepl {:mvn/version "0.25.2"}
                                org.danielsz/system {:mvn/version "0.4.6-SNAPSHOT"}}}}}
