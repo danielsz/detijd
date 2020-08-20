@@ -6,8 +6,8 @@
    [clj-time.format :as f]
    [clj-time.periodic :as p]
    [clj-time.predicates :as pr])
-  #?(:clj (:import [java.time Instant ZoneId ZonedDateTime LocalDate Duration]
-                   [java.time.temporal TemporalAdjusters IsoFields]
+  #?(:clj (:import [java.time Instant ZoneId ZonedDateTime LocalDate Duration DayOfWeek]
+                   [java.time.temporal TemporalAdjusters IsoFields ChronoUnit]
                    [org.joda.time DateTime])))
 
 (defn coerce-dates-to-long [m]
@@ -102,7 +102,13 @@
 #?(:clj (defn seconds-to-first-day-of-next-month []
           (let [now (ZonedDateTime/now (ZoneId/of "Asia/Jerusalem"))
                 next-run (-> (.with now (TemporalAdjusters/firstDayOfNextMonth))
-                            .toLocalDate
-                            (.atStartOfDay (ZoneId/of "Asia/Jerusalem")))
+                             .toLocalDate
+                             (.atStartOfDay (ZoneId/of "Asia/Jerusalem")))
                 duration (Duration/between now next-run)]
             (.getSeconds duration))))
+
+#?(:clj (defn next-weekday-in-days [day]
+          {:pre [(= DayOfWeek (type day))]}
+          (let [now (ZonedDateTime/now (ZoneId/of "Asia/Jerusalem"))
+                today-next-week (.with now (TemporalAdjusters/next day))]
+            (.between (ChronoUnit/DAYS) now today-next-week))))
