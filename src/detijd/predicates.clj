@@ -1,6 +1,6 @@
 (ns detijd.predicates
   (:require [clj-time.core :as t]
-            [detijd.utils :refer [week-number]])
+            [detijd.core :refer [week-number]])
   (:import [java.time Instant LocalDate LocalDateTime ZoneId Period]
            [java.time.temporal ChronoUnit]
            [org.joda.time DateTime]))
@@ -35,6 +35,9 @@
     (t/before? (t/now) d))
   (in-past? [d]
     (t/after? (t/now) d))
+  (days-elapsed? [d] (if (in-past? d)
+                       (t/in-days (t/interval d (t/now)))
+                       (throw (AssertionError. "Date is not in past"))))
 
   Instant
 
