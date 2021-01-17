@@ -14,8 +14,11 @@
   (same-week-number? [d])
   (in-future? [d])
   (in-past? [d])
-  (days-elapsed? [d])
-  (days-remain? [d]))
+  (days-elapsed [d])
+  (minutes-elapsed [d])
+  (hours-elapsed [d])
+  (seconds-elapsed [d])
+  (days-remain [d]))
 
 (extend-protocol DeTijd
 
@@ -35,9 +38,21 @@
     (t/before? (t/now) d))
   (in-past? [d]
     (t/after? (t/now) d))
-  (days-elapsed? [d] (if (in-past? d)
+  (days-elapsed [d] (if (in-past? d)
                        (t/in-days (t/interval d (t/now)))
                        (throw (AssertionError. "Date is not in past"))))
+  (days-remain [d] (if (in-past? d)
+                       (t/in-days (t/interval (t/now) d))
+                       (throw (AssertionError. "Date is not in past"))))
+  (seconds-elapsed [d] (if (in-past? d)
+                         (t/in-seconds (t/interval d (t/now)))
+                         (throw (AssertionError. "Date is not in past"))))
+  (hours-elapsed [d] (if (in-past? d)
+                         (t/in-hours (t/interval d (t/now)))
+                         (throw (AssertionError. "Date is not in past"))))
+  (minutes-elapsed [d] (if (in-past? d)
+                         (t/in-minutes (t/interval d (t/now)))
+                         (throw (AssertionError. "Date is not in past"))))
 
   Instant
 
@@ -56,11 +71,23 @@
                       (.isAfter d past)))
   (last-months? [d x] (let [period (Period/between (LocalDate/ofInstant d (ZoneId/systemDefault)) (LocalDate/ofInstant (Instant/now) (ZoneId/systemDefault)))]
                         (> x (.getMonths period))))
-  (days-elapsed? [d] (if (in-past? d)
+  (days-elapsed [d] (if (in-past? d)
                        (let [now (Instant/now)]
                          (.between ChronoUnit/DAYS d now))
                        (throw (AssertionError. "Date is not in past"))))
-  (days-remain? [d] (if (in-future? d)
+  (minutes-elapsed [d] (if (in-past? d)
+                          (let [now (Instant/now)]
+                            (.between ChronoUnit/MINUTES d now))
+                          (throw (AssertionError. "Date is not in past"))))
+  (hours-elapsed [d] (if (in-past? d)
+                          (let [now (Instant/now)]
+                            (.between ChronoUnit/HOURS d now))
+                          (throw (AssertionError. "Date is not in past"))))
+  (seconds-elapsed [d] (if (in-past? d)
+                          (let [now (Instant/now)]
+                            (.between ChronoUnit/SECONDS d now))
+                          (throw (AssertionError. "Date is not in past"))))
+  (days-remain [d] (if (in-future? d)
                       (let [now (Instant/now)]
                         (.between ChronoUnit/DAYS now d))
                       (throw (AssertionError. "Date is not in future")))))
