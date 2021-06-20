@@ -8,6 +8,7 @@
    [clj-time.predicates :as pr])
   #?(:clj (:import [java.time Instant ZoneId ZonedDateTime LocalDate Duration DayOfWeek]
                    [java.time.temporal TemporalAdjusters IsoFields ChronoUnit]
+                   [java.time.format DateTimeFormatter]
                    [org.joda.time DateTime])))
 
 (defn coerce-dates-to-long [m]
@@ -112,3 +113,8 @@
           (let [now (ZonedDateTime/now (ZoneId/of "Asia/Jerusalem"))
                 today-next-week (.with now (TemporalAdjusters/next day))]
             (.between (ChronoUnit/DAYS) now today-next-week))))
+
+#?(:clj (defn days-to-date [date] ; "2021-04-10"
+          (let [now (LocalDate/now)
+                then (LocalDate/parse date (DateTimeFormatter/ISO_LOCAL_DATE))]
+            (.between (ChronoUnit/DAYS) now then))))
