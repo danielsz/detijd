@@ -12,6 +12,7 @@
   (last-months? [d x])
   (today? [d])
   (same-week-number? [d])
+  (same-year? [d])
   (in-future? [d])
   (in-past? [d])
   (days-elapsed [d])
@@ -34,6 +35,7 @@
     (t/within? (t/interval (t/minus (t/now) (t/months x)) (t/now)) d))
   (today? [d] (= (.toLocalDate d) (t/today)))
   (same-week-number? [d] (= (.getWeekOfWeekyear d) (.getWeekOfWeekyear (t/today))))
+  (same-year? [d] (= (.getYear d) (.getYear (LocalDate/now))))
   (in-future? [d]
     (t/before? (t/now) d))
   (in-past? [d]
@@ -59,6 +61,7 @@
   (today? [d] (let [today (.truncatedTo (Instant/now) ChronoUnit/DAYS)]
                 (= today (.truncatedTo d ChronoUnit/DAYS))))
   (same-week-number? [d] (= (week-number d) (week-number)))
+  (same-year? [d] (= (.getYear (LocalDate/ofInstant d (ZoneId/systemDefault))) (.getYear (LocalDate/now))))
   (in-future? [d]
     (.isBefore (Instant/now) d))
   (in-past? [d]
