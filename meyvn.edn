@@ -7,10 +7,7 @@
  :packaging
  {:uberjar
   {:enabled false,
-   :build-properties {:main-class "detijd.core"},
-   :remote-repository
-   {:id "ssh-repository",
-    :url "scpexe://user@domain:/home/.m2/repository"},
+   :build-properties {:main-class "detijd.core"},,
    :excludes
    {:artifacts ["org.clojure:google-closure-library"],
     :filters
@@ -97,4 +94,6 @@
     :port "1080",
     :version "5",
     :use-system-proxies false}}},
- :profiles {:enabled false}}
+ :profiles {:enabled false}
+ :distribution-management {:id "clojars",
+                           :url "https://clojars.org/repo"}}
