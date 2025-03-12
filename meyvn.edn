@@ -1,7 +1,7 @@
 {:pom
  {:group-id "org.danielsz",
   :artifact-id "detijd",
-  :version "0.2.4",
+  :version "0.2.5",
   :name "detijd"
   :licenses [{:name "Eclipse Public License -v 1.0"
               :url "https://opensource.org/license/epl-1-0/"}]}
